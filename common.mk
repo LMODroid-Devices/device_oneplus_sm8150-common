@@ -45,6 +45,7 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     libaudio-resampler \
     libaudioroute \
+    libbatterylistener \
     libhdmiedid \
     libexthwplugin \
     libhfp \
@@ -165,7 +166,8 @@ PRODUCT_PACKAGES += \
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.3.vendor \
-    android.hardware.drm-service.clearkey
+    android.hardware.drm-service.clearkey \
+    wvmkiller
 
 # fastbootd
 PRODUCT_PACKAGES += \
