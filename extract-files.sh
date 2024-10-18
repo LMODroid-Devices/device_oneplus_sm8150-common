@@ -13,6 +13,8 @@ if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
 
 ANDROID_ROOT="${MY_DIR}/../../.."
 
+export TARGET_ENABLE_CHECKELF=true
+
 # If XML files don't have comments before the XML header, use this flag
 # Can still be used with broken XML files by using blob_fixup
 export TARGET_DISABLE_XML_FIXING=true
@@ -88,6 +90,10 @@ function blob_fixup() {
             [ "$2" = "" ] && return 0
             apktool_patch "${2}" "${MY_DIR}/blob-patches/oplus-ims-ext.patch" -r
             ;;
+        system_ext/lib/libwfdservice.so)
+            [ "$2" = "" ] && return 0
+            sed -i "s/android.media.audio.common.types-V2-cpp.so/android.media.audio.common.types-V3-cpp.so/" "${2}"
+            ;;
         system_ext/lib64/libwfdnative.so)
             [ "$2" = "" ] && return 0
             sed -i "s/android.hidl.base@1.0.so/libhidlbase.so\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/" "${2}"
@@ -101,6 +107,10 @@ function blob_fixup() {
             sed -i "/NXP_NFC_DEV_NODE/ s/pn553/nq-nci/" "${2}"
             sed -i "/NXPLOG_\w\+_LOGLEVEL/ s/0x03/0x02/" "${2}"
             sed -i "s/NFC_DEBUG_ENABLED=0x01/NFC_DEBUG_ENABLED=0x00/" "${2}"
+            ;;
+        vendor/lib/hw/audio.primary.msmnile.so)
+            [ "$2" = "" ] && return 0
+            sed -i "s/\/vendor\/lib\/liba2dpoffload.so/\/odm\/lib\/liba2dpoffload.so\x00\x00\x00/" "${2}"
             ;;
         vendor/lib64/hw/com.qti.chi.override.so)
             [ "$2" = "" ] && return 0
